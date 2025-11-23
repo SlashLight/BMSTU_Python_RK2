@@ -25,42 +25,63 @@ def main():
         print("Данные пустые.")
         return
 
+    # Подготовка данных
     df = pd.DataFrame(data_list)
     df['date'] = pd.to_datetime(df['date'])
-
     df = df.sort_values('date')
 
     df['daily_change'] = df['tickets_created'] - df['tickets_resolved']
-
     df['total_active_tickets'] = df['daily_change'].cumsum()
 
-    print("\nПример рассчитанных данных:")
+    print("\nПример рассчитанных данных (последние 5 дней):")
     print(df[['date', 'tickets_created', 'tickets_resolved', 'total_active_tickets',
-              'satisfaction_rate']].head(30).to_string())
+              'satisfaction_rate']].tail(30).to_string())
 
-    plt.figure(figsize=(10, 6))
     sns.set_theme(style="whitegrid")
+    fig, axes = plt.subplots(1, 2, figsize=(18, 7))
+    fig.suptitle(f'Анализ нагрузки и качества работы отдела ({LOGIN})', fontsize=16)
 
-    # Ось X: Общее количество активных тикетов (накопленное)
-    # Ось Y: Удовлетворенность
+    # --- ГРАФИК 1: Рост нагрузки на отдел ---
+    sns.lineplot(
+        data=df,
+        x='date',
+        y='total_active_tickets',
+        marker='o',
+        linewidth=2.5,
+        color='tab:red',
+        ax=axes[0]
+    )
+
+    axes[0].bar(df['date'], df['tickets_created'], color='gray', alpha=0.3, label='Новые заявки (шт)')
+
+    axes[0].set_title('Динамика нагрузки на отдел (Backlog)')
+    axes[0].set_xlabel('Дата')
+    axes[0].set_ylabel('Количество активных (нерешенных) тикетов')
+    axes[0].legend(['Накопленный долг', 'Новые заявки за день'])
+    axes[0].tick_params(axis='x', rotation=45)
+    axes[0].grid(True, linestyle='--')
+
+    # --- ГРАФИК 2: Корреляция ---
     sns.regplot(
         data=df,
         x='total_active_tickets',
         y='satisfaction_rate',
         scatter_kws={'s': 80, 'alpha': 0.6, 'color': 'blue'},
-        line_kws={'color': 'red', 'linewidth': 2},
-        ci=95
+        line_kws={'color': 'darkred', 'linewidth': 2},
+        ci=95,
+        ax=axes[1]
     )
 
-    plt.title('Влияние общего количества активных тикетов на удовлетворенность')
-    plt.xlabel('Накопленный объем нерешенных тикетов (относительно начала периода)')
-    plt.ylabel('Удовлетворенность (%)')
-
-    # Вычисляем коэффициент корреляции
     corr = df['total_active_tickets'].corr(df['satisfaction_rate'])
-    plt.legend([f'Линия тренда', f'Корреляция: {corr:.2f}'])
+
+    axes[1].set_title(f'Влияние нагрузки на удовлетворенность (Корреляция: {corr:.2f})')
+    axes[1].set_xlabel('Накопленный объем нерешенных тикетов')
+    axes[1].set_ylabel('Удовлетворенность (%)')
+    axes[1].legend([f'Данные', 'Линия тренда'])
+    axes[1].grid(True, linestyle='--')
 
     plt.tight_layout()
+
     plt.show()
 
 
