@@ -3,7 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Используем данные Отдела баз данных
 BASE_URL = "http://193.233.171.205:5000"
 LOGIN = "analyst_db"
 CODE = "PqR67zAb89St"
