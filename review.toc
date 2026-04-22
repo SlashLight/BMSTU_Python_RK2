@@ -1,0 +1,14 @@
+\babel@toc {russian}{}\relax 
+\contentsline {chapter}{Введение}{3}{chapter*.2}%
+\contentsline {section}{Цель работы}{3}{chapter*.3}%
+\contentsline {section}{Исходные данные}{3}{chapter*.3}%
+\contentsline {section}{Требования к функциональности}{3}{chapter*.3}%
+\contentsline {chapter}{Основная часть}{4}{chapter*.3}%
+\contentsline {section}{Архитектура решения}{5}{chapter*.4}%
+\contentsline {section}{Используемые библиотеки}{5}{chapter*.4}%
+\contentsline {section}{Методология расчета метрик}{5}{chapter*.4}%
+\contentsline {section}{Описание визуализации}{5}{Item.2}%
+\contentsline {chapter}{Результаты работы}{6}{Item.2}%
+\contentsline {section}{Полученные данные}{7}{chapter*.5}%
+\contentsline {section}{Аналитические выводы}{7}{chapter*.5}%
+\contentsline {chapter}{Заключение}{7}{chapter*.5}%
